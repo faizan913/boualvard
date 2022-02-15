@@ -1,21 +1,23 @@
 const mysql = require('mysql');
 
- const dbConn = mysql.createPool({
+ /* const dbConn = mysql.createPool({
   connectionLimit: 100, //important
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'boualvard_admin',
   debug: false
-});   
+});  */  
  /**/
 //Create db connection
-/* const dbConn = mysql.createConnection({
-  host     : 'eu-cdbr-west-01.cleardb.com',
-  user     : 'b8235e3a8f8a1a',
-  password : '635fd4be',
-  database : 'heroku_c449ea1974c8140'
-}); */
+const dbConn = mysql.createPool({
+  connectionLimit: 100, //important
+  host     : 'us-cdbr-east-05.cleardb.net',
+  user     : 'bcb3b5578311fc',
+  password : '7d908924',
+  database : 'heroku_23aed3ae45ecfd0',
+  debug: false
+}); 
 
 /* const dbConn = mysql.createPool({
   connectionLimit: 100, //important
@@ -38,3 +40,8 @@ dbConn.getConnection(function (err, connection) {
   console.log("Database Connected!");
 })
 module.exports = dbConn
+
+/* mysql://
+bcb3b5578311fc
+7d908924
+us-cdbr-east-05.cleardb.net */

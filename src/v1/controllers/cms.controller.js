@@ -17,8 +17,8 @@ exports.findAll = (req, res)=> {
  
  exports.create = (req, res) =>{
     const newCMS = new CMS(req.body)
-    let locale = (JSON.stringify(req.headers['locale']))
-    newCMS.locale= (locale === undefined) ? "en" :locale 
+    locale = (JSON.stringify(req.headers['locale']))
+    newCMS.locale= (locale === undefined) ? "en" :(JSON.stringify(req.headers['locale'])).replace(/^"|"$/g, '') 
    if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{
@@ -51,8 +51,9 @@ exports.findAll = (req, res)=> {
 
 exports.update = (req, res) =>{
     const newCMS = new CMS(req.body)
-    let locale = (JSON.stringify(req.headers['locale']))
-    newCMS.locale= (locale === undefined) ? "en" :locale 
+    locale = (JSON.stringify(req.headers['locale']))
+    newCMS.locale= (locale === undefined) ? "en" :(JSON.stringify(req.headers['locale'])).replace(/^"|"$/g, '') 
+   
     if(req.body.constructor === Object && Object.keys(req.body).length === 0){
         res.status(400).send({ error:true, message: 'Please provide all required field' });
     }else{

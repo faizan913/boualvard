@@ -16,16 +16,10 @@ app.use(function(req, res, next) {
 
 
 //Authentication for v1
+var apiRouter = require('./v1/routes/api');
+app.use('/api', apiRouter); 
 
-require('./v1/routes/user.routes')(app)
-require('./v1/routes/config.routes')(app)
-require('./v1/routes/cms.routes')(app)
 
-require('./v1/routes/client.routes')(app)
-require('./v1/routes/gallery.routes')(app)
-require('./v1/routes/service.routes')(app)
-require('./v1/routes/project.routes')(app)
-require('./v1/routes/enquiry.routes')(app)
 // health check
 app.get("/health", (req, res) => {
   res.json({ status: "up" })

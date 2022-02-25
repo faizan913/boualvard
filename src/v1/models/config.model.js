@@ -35,7 +35,7 @@ Config.create = function (newConfig, result) {
             result(err, null);
         }
         else{
-            const transData = [
+            let transData = [
                 {   translation_type: 'title',
                     reference_type: 'configs',
                     locale: newConfig.locale,
@@ -74,14 +74,13 @@ Config.create = function (newConfig, result) {
             ]
             for(let i = 0; i < transData.length; i++){
                 let post  = transData[i]
-                dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
+                return dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
                     if (err) {
-                        console.log("error: ", err);
                         result(err, null);
                         return;
                       }
                       let {  created_at,updated_at,locale,archived, ...all} = newConfig
-                       result(null, { id: congRes.insertId, ...all });
+                         result(null, { id: congRes.insertId, ...all });
                 });
             }
         }
@@ -153,7 +152,7 @@ Config.update = (id, config, result) => {
                 let update  = transData[i]
                 let updateQuery  = "update translations SET value='"+update.value+"' WHERE reference_id = "+id+ " AND  reference_type = 'configs' AND locale = '"+update.locale+"' AND translation_type='"+update.translation_type+"' " 
  
-                dbConn.query(updateQuery, function(err, res) {
+                return dbConn.query(updateQuery, function(err, res) {
                     if (err) {
                         console.log("error: ", err);
                         result(null, err);

@@ -15,7 +15,8 @@ const CMS = function (cms) {
     this.created_at= new Date(),
     this.updated_at= new Date()
 }
-CMS.create = function (cms, result) {
+
+CMS.create = function (cms,result) {
     let imageJson = JSON.stringify(cms.images)
     const cmsData = {
         type:cms.type,
@@ -28,56 +29,57 @@ CMS.create = function (cms, result) {
         created_at: new Date(),
         updated_at: new Date()
     } 
-    dbConn.query("INSERT INTO cms set ?", cmsData, function (err, cmsres) {
-        if (err) {
-            result(err, null);
+    return dbConn.query("INSERT INTO cms set ?", cmsData, function (err, res) {
+        if (err){ 
+             result(err, null);
+             return;
         }
-        else {
-           
-            const transData = [
-                {   translation_type: 'title',
-                    reference_type: 'cms',
-                    locale: cms.locale,
-                    value: cms.title,
-                    reference_id: cmsres.insertId,
-                    created_at: new Date(),
-                    updated_at: new Date()
-                },
-                {  
-                    translation_type: 'description',
-                    reference_type: 'cms',
-                    locale: cms.locale,
-                    value: cms.description,
-                    reference_id: cmsres.insertId,
-                    created_at: new Date(),
-                    updated_at: new Date()
-                },
-                {  
-                    translation_type: 'content',
-                    reference_type: 'cms',
-                    locale: cms.locale,
-                    value: cms.content,
-                    reference_id: cmsres.insertId,
-                    created_at: new Date(),
-                    updated_at: new Date()
-                }
-            ]
-            for(let i = 0; i < transData.length; i++){
-                let post  = transData[i]
-                dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
-                    if (err) {
-                        console.log("error: ", err);
-                        result(err, null);
-                        return;
-                      }
-                      let { archived, created_at,updated_at,locale, ...all} = cms
-                       result(null, { id: cmsres.insertId, ...all });
-                });
-            }
-        }
+         saveTranslation(cms, res.insertId,result)
+       
     })
 }
 
+const saveTranslation = (cms, insertId, result)=>{
+    const transData = [
+        {   translation_type: 'title',
+            reference_type: 'cms',
+            locale: cms.locale,
+            value: cms.title,
+            reference_id: insertId,
+            created_at: new Date(),
+            updated_at: new Date()
+        },
+        {  
+            translation_type: 'description',
+            reference_type: 'cms',
+            locale: cms.locale,
+            value: cms.description,
+            reference_id: insertId,
+            created_at: new Date(),
+            updated_at: new Date()
+        },
+        {  
+            translation_type: 'content',
+            reference_type: 'cms',
+            locale: cms.locale,
+            value: cms.content,
+            reference_id: insertId,
+            created_at: new Date(),
+            updated_at: new Date()
+        }
+    ]
+    for(let i = 0; i < transData.length; i++){
+        let post  = transData[i]
+      return  dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
+            if (err){ 
+                result(err, null);
+                return;
+             }
+              let { archived, created_at,updated_at,locale, ...all} = cms
+              result(null,{ id: insertId, ...all });
+        });
+    }
+}
 CMS.findById =  (locale,id, result)=> {
     const query = 'SELECT c.id,(select t.value from translations t where t.reference_id = c.id AND t.reference_type = "cms" and t.translation_type = "title" and t.locale = '+locale+')as "title" , (select t.value from translations t where t.reference_id = c.id AND t.reference_type = "cms" and t.translation_type = "description" and t.locale = '+locale+')as "description"  , (select t.value from translations t where t.reference_id = c.id AND t.reference_type = "cms" and t.translation_type = "content" and t.locale = '+locale+')as "content", (select t.value from translations t where t.reference_id = c.id AND t.reference_type = "cms" and t.translation_type = "images" and t.locale = '+locale+')as "images", c.featured_image,c.type,c.template FROM cms c where c.id='+id
     dbConn.query(query,  (err, res)=> {             
@@ -132,7 +134,7 @@ CMS.update = (id, cms, result) => {
              for(let i = 0; i < transData.length; i++){
                   let update  = transData[i]
                   let updateQuery  = "update translations SET value='"+update.value+"' WHERE reference_id = "+id+ " AND  reference_type = 'cms' AND locale = '"+update.locale+"' AND translation_type='"+update.translation_type+"' " 
-                  dbConn.query(updateQuery, function(err, res) {
+                 return dbConn.query(updateQuery, function(err, res) {
                     if (err) {
                         console.log("error: ", err);
                         result(null, err);
@@ -142,7 +144,7 @@ CMS.update = (id, cms, result) => {
                         result({ message: "Not update" }, null);
                         return;
                       }                      
-                      let { created_at,updated_at,locale, ...all} = cms //destructure of obj object
+                      let { created_at,updated_at,locale,active,archived, ...all} = cms //destructure of obj object
                       result(null,  {id:id,...all} );
                   });
               }

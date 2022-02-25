@@ -63,7 +63,7 @@ Service.create = function (newService, result) {
             ]
             for(let i = 0; i < transData.length; i++){
                 let post  = transData[i]
-                dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
+                return   dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
                     if (err) {
                         result(err, null);
                         return;
@@ -138,7 +138,7 @@ Service.update = (id, service, result) => {
                 let update  = transData[i]
                 let updateQuery  = "update translations SET value='"+update.value+"' WHERE reference_id = "+id+ " AND  reference_type = 'services' AND locale = '"+update.locale+"' AND translation_type='"+update.translation_type+"' " 
  
-                dbConn.query(updateQuery, function(err, res) {
+                return dbConn.query(updateQuery, function(err, res) {
                     if (err) {
                         result(null, err);
                         return;

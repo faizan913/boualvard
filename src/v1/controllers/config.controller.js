@@ -24,9 +24,9 @@ exports.create = (req, res) =>{
     }else{
         Config.create(newConfig, (err, config) =>{
             if (err){ return res.send(err);}
-           else{
-           return res.status(201).send(config);
-           }
+            else{
+            return res.status(201).send(config);
+            }
         });
     }
 }

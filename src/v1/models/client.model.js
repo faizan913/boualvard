@@ -36,7 +36,7 @@ Client.create = function (newClient, result) {
             ]
             for(let i = 0; i < transData.length; i++){
                 let post  = transData[i]
-                dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
+                return dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
                     if (err) {
                         result(err, null);
                         return;
@@ -93,13 +93,12 @@ Client.update = (id, client, result) => {
                 let update  = transData[i]
                 let updateQuery  = "update translations SET value='"+update.value+"' WHERE reference_id = "+id+ " AND  reference_type = 'clients' AND locale = '"+update.locale+"' AND translation_type='"+update.translation_type+"' " 
  
-                dbConn.query(updateQuery, function(err, res) {
+               return dbConn.query(updateQuery, function(err, res) {
                     if (err) {
                         result(null, err);
                         return;
                       }
                       if (res.affectedRows == 0) {
-                        // not found Tutorial with the id
                         result({ message: "Not update" }, null);
                         return;
                       }

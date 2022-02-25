@@ -45,7 +45,7 @@ Project.create = function (newProject, result) {
             ]
             for(let i = 0; i < transData.length; i++){
                 let post  = transData[i]
-                dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
+                return dbConn.query('INSERT INTO translations SET ?', post, function(err, res) {
                     if (err) {
                         result(err, null);
                         return;
@@ -108,7 +108,7 @@ Project.update = (id, project, result) => {
                 let update  = transData[i]
                 let updateQuery  = "update translations SET value='"+update.value+"' WHERE reference_id = "+id+ " AND  reference_type = 'projects' AND locale = '"+update.locale+"' AND translation_type='"+update.translation_type+"' " 
  
-                dbConn.query(updateQuery, function(err, res) {
+                return dbConn.query(updateQuery, function(err, res) {
                     if (err) {
                         result(null, err);
                         return;

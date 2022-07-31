@@ -1,23 +1,23 @@
 const mysql = require('mysql');
 
- const dbConn = mysql.createPool({
+/*  const dbConn = mysql.createPool({
   connectionLimit: 100, //important
   host: 'localhost',
   user: 'root',
   password: '',
   database: 'boualvard_admin',
   debug: false
-});   
+});   */ 
  
 //Create db connection for heroku
-/* const dbConn = mysql.createPool({
+const dbConn = mysql.createPool({
   connectionLimit: 100, //important
   host     : 'us-cdbr-east-05.cleardb.net',
   user     : 'bcb3b5578311fc',
   password : '7d908924',
   database : 'heroku_23aed3ae45ecfd0',
   debug: false
-});  */
+}); 
 
 /* const dbConn = mysql.createPool({
   connectionLimit: 100, //important

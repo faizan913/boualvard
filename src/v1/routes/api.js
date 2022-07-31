@@ -24,7 +24,7 @@ const configController = require('../controllers/config.controller');
 
 /* Client Api */
 const clientController = require('../controllers/client.controller');
-  router.get("/v1/clients", clientController.findAll);
+  //router.get("/v1/clients", clientController.findAll);
   router.post( "/v1/clients",[authJwt.verifyToken,authJwt.isAdmin],clientController.create)
   router
     .route("/v1/clients/:id")

@@ -14,7 +14,7 @@ const dbConn = mysql.createPool({
   connectionLimit: 100, //important
   host     : 'us-cdbr-east-05.cleardb.net',
   user     : 'bcb3b5578311fc',
-  password : '7d908924',
+  password : 'dsbkjdbkj',
   database : 'heroku_23aed3ae45ecfd0',
   debug: false
 }); 
@@ -37,7 +37,7 @@ const dbConn = mysql.createPool({
 });  */
 dbConn.getConnection(function (err, connection) {
   if (err) throw err;
-  console.log("Database Connected!");
+  console.log("Database successfully Connected!");
 })
 module.exports = dbConn
 
